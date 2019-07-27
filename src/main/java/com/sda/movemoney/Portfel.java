@@ -3,25 +3,33 @@ package com.sda.movemoney;
 import com.sda.movemoney.exception.JestesBiednyException;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.lang.String.format;
 
 public class Portfel {
-    private Pieniadze zlotowki;
+    private Map<Waluta, Pieniadze> pieniadze;
 
     public Portfel() {
-        zlotowki = new Pieniadze(BigDecimal.ZERO);
+        pieniadze = new HashMap<>();
     }
 
     public void wplac(Pieniadze ile) {
-        zlotowki.przyjmijPieniadze(ile);
+        if (pieniadze.containsKey(ile.getWaluta())) {
+            pieniadze.get(ile.getWaluta()).przyjmijPieniadze(ile);
+        } else {
+            pieniadze.put(ile.getWaluta(), ile);
+        }
     }
 
     public void wyplac(Pieniadze ile) throws JestesBiednyException {
-        zlotowki.pobierzPieniadze(ile);
+        Pieniadze pieniadz = pieniadze.getOrDefault(ile.getWaluta(),
+                new Pieniadze(BigDecimal.ZERO, ile.getWaluta()));
+        pieniadz.pobierzPieniadze(ile);
     }
 
     public String saldo() {
-        return format("W portfelu jest: %s", zlotowki);
+        return format("W portfelu jest: %s", pieniadze);
     }
 }

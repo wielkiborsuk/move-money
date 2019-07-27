@@ -4,11 +4,15 @@ import com.sda.movemoney.exception.JestesBiednyException;
 
 import java.util.Objects;
 
+import static java.lang.String.format;
+
 public class Osoba {
+    private String imie;
     private Portfel portfel;
 
-    public Osoba() {
-        portfel = new Portfel();
+    public Osoba(String imie) {
+        this.portfel = new Portfel();
+        this.imie = imie;
     }
 
     public boolean czyMaszPortfel() {
@@ -26,5 +30,10 @@ public class Osoba {
 
     public void przyjmij(Pieniadze ile) {
         portfel.wplac(ile);
+    }
+
+    public void audyt() {
+        System.out.println(format("Jestem %s", imie));
+        System.out.println(portfel.saldo());
     }
 }
